@@ -26,5 +26,5 @@ class Bugsmusic2(object):
                     print(f'{n_title} 위')
                     print(f'{link1.find("a").text}')
 
-melonmusic2.main()
+Bugsmusic2.main()
 

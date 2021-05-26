@@ -4,28 +4,30 @@ from urllib.request import urlopen
 class BugsMusic(object):
 
     url = ''
+    class_name = []
 
     def __str__(self):
         return self.url
 
-    @staticmethod
-    def scrap(bugs):
-        soup = BeautifulSoup(urlopen(bugs.url), 'html.parser')
 
+    def scrap(self):
+        soup = BeautifulSoup(urlopen(self.url), "lxml")
 
-        for i in soup.find_all(name='p', attrs=({"class": "left"})):
-            count = 0
+        count = 0
+        for i in soup.find_all(name='p', attrs=({"class": self.class_name[0]})):
+
             count += 1
             print(f'{count} 위')
-            print(f'{soup.find("a").text}')
-        for i in soup.find_all(name='td', attrs=({"class": "left"})):
-            count = 0
+            print(f'{i.find("a").text}')
+
+        count = 0
+        for i in soup.find_all(name='p', attrs=({"class": self.class_name[1]})):
             count += 1
             print(f'{count} 위')
-            print(f'{soup.find("a").text}')
+            print(f'{i.find("a").text}')
 
 
-    #'https://music.melon.co.kr/chart/track/realtime/total?wl_ref=M_contents_03_01'
+    #'https://music.bugs.co.kr/chart'
 
     @staticmethod
     def main():
@@ -40,26 +42,12 @@ class BugsMusic(object):
             elif menu == 1:
                 bugs.url = input('Input Url')
             elif menu == 2:
-                #print({melon})
-
-                soup = BeautifulSoup(urlopen(bugs.url), 'html.parser')
-                melon.ranking(soup)
-
-
-                ''' 
-                print('-------------------------ARTIST RANKING------------------------------')
-                count = 0
-                for i in soup.find_all(name='p', attrs=({"class" : "artist"})):
-                    count += 1
-                    print(f'{count} 위')
-
-
-                print('-------------------------TITLE RANKING------------------------------')
-                '''
-
+                bugs.class_name.append("artist")
+                bugs.class_name.append("title")
+                bugs.scrap()
 
             else:
                 print('Wrong Number')
                 continue
 
-melonMusic.main()
+BugsMusic.main()

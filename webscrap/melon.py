@@ -1,14 +1,39 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+import urllib.request
 
 class Melon(object):
 
     url = ''
+    class_name = []
+    hdr = { 'User-Agent' : 'Mozilla/5.0'}
+
 
     def __str__(self):
         return self.url
 
-    #https://www.melon.com/chart/index.htm
+    def scrap(self):
+
+        req = urllib.request.Request(self.url, headers=self.hdr)
+        html = urllib.request.urlopen(req).read()
+        soup = BeautifulSoup(html, 'lxml')
+
+        print('-------------------------ARTIST RANKING------------------------------')
+        count = 0
+        for i in soup.find_all(name='div', attrs=({"class": self.class_name[0]})):
+            count += 1
+            print(f'{str(count)} 위')
+            print(f'{i.find("a").text}')
+
+        print('-------------------------TITLE RANKING------------------------------')
+        count = 0
+        for i in soup.find_all(name='div', attrs=({"class": self.class_name[1]})):
+            count += 1
+            print(f'{str(count)} 위')
+            print(f'{i.find("a").text}')
+
+
+    # https://www.melon.com/chart/index.htm
     @staticmethod
     def main():
 
@@ -22,23 +47,11 @@ class Melon(object):
             elif menu == 1:
                 melon.url = input('Input Url')
             elif menu == 2:
-                # print({melon})
 
-                soup = BeautifulSoup(urlopen(melon.url), 'html.parser')
+                melon.class_name.append("ellipsis rank02")
+                melon.class_name.append("ellipsis rank01")
 
-                print('-------------------------ARTIST RANKING------------------------------')
-                count = 0
-                for i in soup.find_all(name='div', attrs=({"class" : "ellipsis rank01"})):
-                    count += 1
-                    print(f'{count} 위')
-                    print(f'{i.find("a").text}')
-
-                print('-------------------------TITLE RANKING------------------------------')
-                count = 0
-                for i in soup.find_all(name='div', attrs=({"class": "ellipsis rank02"})):
-                    count += 1
-                    print(f'{count} 위')
-                    print(f'{i.find("a").text}')
+                melon.scrap()
 
             else:
                 print('Wrong Number')
