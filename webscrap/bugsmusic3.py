@@ -30,8 +30,8 @@ class BugsMusic(object):
         self.dict = dict(zip(self.title_ls, self.artist_ls))
 
     def dict_to_dataframe(self):
-        dt = self.dict
-        self.df = pd.DataFrame.from_dict(dt, orient='index')
+
+        self.df = pd.DataFrame.from_dict(self.dict, orient='index')
 
         print(self.df)
 
