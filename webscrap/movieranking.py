@@ -34,6 +34,7 @@ class NaverMovie(object):
 
         self.df.to_csv('./data/navermovie.csv', sep='.', na_rep='NaN')
 
+
 if __name__ == '__main__':
     naver = NaverMovie()
     # tit3
